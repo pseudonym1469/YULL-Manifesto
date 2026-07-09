@@ -30,14 +30,20 @@
 ### 🛠️ 현재 개발 현황 및 계획 (Current Development Status & Plans)
 - **바이브 코더 입문자:** 저는 이제 막 시작한 바이브 코더(Vibe Coder) 입문자라 아직 모르는 것이 많고 영어도 어렵습니다.
   - *I am a beginner 'Vibe Coder' who just started, so there is still a lot I don't know, and English is difficult for me.*
+  - 
 - **현재 진행 중:** 현재 CI(Custom Intelligence)와 옵시디언(Obsidian) 플러그인을 개발하고 있습니다.
   - *Currently, I am developing CI (Custom Intelligence) and an Obsidian plugin.*
+  - 
 - **출시 예정:** 몇 주 이내에 공식 웹사이트, 옵시디언 플러그인, 그리고 후원 사이트가 개설될 예정입니다.
   - *Within a few weeks, an official website, the Obsidian plugin, and a sponsorship/donation site will be launched.*
+  - 
 - **💰 후원 정책 (Sponsorship Policy):** 후원 금액은 **최대 $100(USD)**로 고정되어 있습니다.
   - *The sponsorship amount is capped and fixed at a maximum of $100 (USD).*
-- **📢 피드백 안내 (Feedback Notice):** 보내주시는 여러 가지 관심과 도움에 진심으로 감사드립니다. 하지만 제가 아직은 서투르고 부족하여 **보내주시는 모든 피드백을 수용하거나 반영하지는 못하는 점** 양해 부탁드립니다. 감사합니다!
-  - *Thank you so much for your interest and support. However, since I am still learning and inexperienced, please understand that I may not be able to accept or review all feedback. Thank you!*
+  - 
+- **📢 피드백 안내 (Feedback Notice):** 보내주시는 여러 가지 관심과 도움에 진심으로 감사드립니다. 하지만 제가 아직은 서투르고 부족하여
+- **보내주시는 모든 피드백을 수용하거나 반영하지는 못하는 점** 양해 부탁드립니다. 감사합니다!
+  - *Thank you so much for your interest and support. However, since I am still learning and inexperienced,
+  -  please understand that I may not be able to accept or review all feedback. Thank you!*
 
 ---
 
@@ -52,5 +58,15 @@
 부디 나의 질량이 메아리로 멈추지 않고 누군가를 도와줄 수 있는 질량이 되기를
 널리 인간 세상을 위해 멀리 멀리 퍼져가길 바랍니다.
 
+
+*We, the finite beings who met within infinity, what kind of relationship will we form? Won't we only see fragmentary information of each other's universe through the window of that moment?*
+*Well, I just... wanted to communicate. Just because. No matter how grand the philosophy, how vast the interpretation, and how barren reality seems—*
+*Don't you think we still have our own stories and narratives? Can't we still dance anyway? Hehe.*
+*My universe is precious to me. That is why I respect yours first.*
+*Your universe, whether you know it or not, must be truly beautiful.*
+*We just haven't realized it yet.*
+*I sincerely hope that my mass does not stop as a mere echo, but becomes a mass that can help someone.*
+*I hope it spreads far and wide for the benefit of humanity.*
+
 Une seule goutte d'eau peut faire déborder l'océan.
- - Bernard Werber - 
+- Bernard Werber -
