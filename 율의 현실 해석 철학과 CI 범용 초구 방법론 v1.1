@@ -1,0 +1,1247 @@
+# 율의 현실 해석 철학과 CI 범용 초구 방법론 v1.1
+
+## 문서 상태
+
+* 철학·논리·아키텍처: `READY_FOR_CONTRACT_FREEZE`
+* 독립 실험: `CONTINUE_READ_ONLY_SHADOW`
+* 기존 CI 실시간 대체: `NOT_READY_FOR_LIVE_REPLACEMENT`
+* Stage 9: `VERIFIED_PARTIAL`
+* 복합 스트레스 검증: `REQUIRED_NEXT_GATE`
+
+---
+
+# 1. 선언
+
+현실은 고정된 객체의 목록이 아니다.
+
+현실은 사건이 발생할 때마다 수많은 가능성이 관계를 맺고, 활성화되고, 억제되고, 충돌하며, 특정한 관측 결과로 수렴하는 동적 관계장이다.
+
+사람과 시스템이 보는 현실은 현실 전체가 아니다. 현재의 목적, 위치, 기억, 감각, 비용, 위험, 권한과 가치에 의해 선택된 관측 결과다.
+
+CI 범용 초구 모델은 이 관점을 실행 가능한 계산 구조로 구현한다.
+
+> 하위차원의 입력을 출처가 보존된 상위차원 가능성 상태로 펼치고, 복수 후보와 충돌을 조기에 제거하지 않은 채 중첩하여 관측한 뒤, 현재 목적에 필요한 결과만 다시 하위차원으로 투영한다.
+
+여기서 파동, 중첩, 상위차원, 초구는 물리학적 사실을 단정하는 표현이 아니다. 초기 구현에서는 다음을 의미하는 계산·설계 추상화다.
+
+```text
+파동       = 입력 사건에서 파생된 복수 의미 신호
+상위차원   = 맥락·증거·안전·시간·비용 등의 축이 추가된 상태
+중첩       = 복수 후보를 조기에 하나로 확정하지 않고 함께 보존하는 상태
+관측       = 목적·증거·정책에 따라 후보를 출력 번들로 수렴하는 과정
+초구       = 가능성의 관계·이동·활성화를 다루는 범용 계산 공간
+```
+
+---
+
+# 2. 철학·모델·구현·후보의 분리
+
+CI 초구 프로젝트의 모든 개념은 다음 네 층으로 구분한다.
+
+## 2.1 철학적 현실관
+
+현실을 사건과 가능성의 관계장으로 바라보는 관점이다.
+
+이 층은 방향과 가치 판단의 기준을 제공하지만, 그 자체가 구현 완료나 과학적 증명을 뜻하지 않는다.
+
+## 2.2 계산 추상화
+
+철학을 프로그램으로 다루기 위한 구조다.
+
+예:
+
+* Event
+* Wave
+* Anchor
+* Layer
+* Candidate
+* Retrieval Score
+* Superposition
+* Observation Bundle
+
+## 2.3 검증된 구현
+
+실제로 코드와 실험으로 작동이 확인된 범위다.
+
+예:
+
+* 입력 파동 생성
+* 복수 후보 보존
+* 관측 경계
+* READ_ONLY 부작용 차단
+* Stage 9 사건 형태 연결 및 비회귀 결과
+
+## 2.4 후보 개념
+
+아직 충분히 검증되지 않은 아이디어다.
+
+후보 개념을 바로 코어 법칙으로 채택하지 않는다.
+
+---
+
+# 3. 율의 현실 해석 순환
+
+율의 현실 해석은 고정된 일방향 절차가 아니다.
+
+```text
+Reality ↔ Interpretation ↔ Philosophy
+```
+
+## Reality
+
+실제로 발생한 입력, 결과, 오류, 비용, 변화와 부작용이다.
+
+## Interpretation
+
+현실에서 관측된 관계와 패턴을 사건, 의미, 원인 후보로 해석하는 과정이다.
+
+## Philosophy
+
+어떤 기준으로 관측하고, 무엇을 중요하게 여기며, 어떤 시스템을 만들 것인지 정하는 상위 원칙이다.
+
+세 요소 중 어느 지점에서든 시작할 수 있다.
+
+철학이 현실을 보는 방법을 바꾸고, 현실이 해석을 수정하며, 해석이 다시 철학을 보완한다.
+
+---
+
+# 4. CI 실행 파이프라인
+
+율의 철학 순환과 달리, 실제 CI 입력 처리는 순서를 가진다.
+
+```text
+Low-Dimensional Input
+        ↓
+Immutable Event
+        ↓
+Semantic Wave Projection
+        ↓
+Dimension Lift with Provenance
+        ↓
+Sparse Candidate Retrieval
+        ↓
+Higher-Dimensional Superposition
+        ↓
+Evidence / Truth / Route Evaluation
+        ↓
+Independent Policy Gate
+        ↓
+Observation Bundle
+        ↓
+One Controlled Emission
+        ↓
+User / Environment Feedback
+        ↓
+New Event
+```
+
+출력은 종점이 아니다.
+
+사용자와 환경의 반응은 다음 입력 사건이 된다.
+
+---
+
+# 5. 하위차원 입력
+
+사용자의 자연어, 명령, 센서값과 UI 행동은 현실의 여러 조건을 압축한 하위차원 표현이다.
+
+예:
+
+```text
+과거 실패 사례를 참고해서 안전한 방법만 짧게 보여줘.
+```
+
+이 문장에는 다음 의미가 함께 존재한다.
+
+* 과거 근거 사용
+* 실패 사례 우선
+* 안전성 강조
+* 실행보다 방법 제시
+* 짧은 출력
+* 위험 후보 억제
+
+따라서 입력을 첫 번째 키워드나 대표 의도 하나로 즉시 축소하면 안 된다.
+
+---
+
+# 6. Immutable Event
+
+Event는 입력 처리의 불변 기준 컨테이너다.
+
+```python
+InputEvent(
+    event_id,
+    raw_input,
+    timestamp,
+    input_channel,
+    current_context,
+    historical_links,
+    explicit_constraints,
+    permission_request,
+    expected_output,
+)
+```
+
+Event가 보존해야 하는 것:
+
+* 원본 입력
+* 발생 시점
+* 입력 채널
+* 명시된 조건
+* 현재 맥락
+* 과거 사건 연결
+* 권한 요청
+* 기대 결과
+
+Wave 분석이 잘못되더라도 Event 원문은 변하지 않는다.
+
+---
+
+# 7. Semantic Wave Projection
+
+Wave는 Event 자체가 아니라 Event에서 파생된 의미 투영이다.
+
+```text
+Event 1개
+→ Wave 여러 개 가능
+```
+
+Wave가 표현할 수 있는 요소:
+
+* 의도
+* 대상
+* 행동
+* 부정
+* 조건
+* 시간 방향
+* 우선순위
+* 입력 내 관계
+* 출력 요구
+
+예:
+
+```text
+패치 후보는 보여주되 적용하지 마.
+```
+
+```text
+wave_1:
+  action = patch_candidate_preview
+  polarity = positive
+
+wave_2:
+  action = patch_execution
+  polarity = negative
+
+relation:
+  preview_allowed
+  execution_forbidden
+```
+
+부정은 단순히 낮은 점수가 아니다. 권한·정책 조건과 연결되는 명시적 관계다.
+
+---
+
+# 8. Dimension Lift with Provenance
+
+차원 승격은 입력에 새로운 사실을 임의로 만드는 과정이 아니다.
+
+Event와 Wave에 연결되는 관측축을 추가하는 과정이다.
+
+```text
+원문
++ 의미 파동
++ 현재 맥락
++ 과거 사건
++ 앵커
++ 레이어
++ 증거
++ 시간
++ 비용
++ 위험
++ 권한
++ 사용자 가치
+```
+
+추가된 모든 값은 출처와 증거 상태를 가져야 한다.
+
+```python
+DimensionValue(
+    name="safety_priority",
+    value=0.9,
+    source="explicit_user_constraint",
+    evidence_state="VERIFIED",
+)
+```
+
+추론된 값은 추론이라고 표시한다.
+
+```python
+DimensionValue(
+    name="historical_context_relevance",
+    value=0.7,
+    source="context_inference",
+    evidence_state="INFERRED",
+)
+```
+
+필수 불변식:
+
+```text
+원문은 불변이다.
+추가 차원은 출처를 가진다.
+추론은 사실로 위장하지 않는다.
+기본값은 기본값으로 표시한다.
+```
+
+---
+
+# 9. 초구 가능성 공간
+
+초구는 고정된 3차원 구체가 아니다.
+
+다음과 같은 다차원 평가축을 가진 계산 공간이다.
+
+* 의미 관련성
+* 파동 적합성
+* 맥락 연결성
+* 증거 강도
+* 시간 적합성
+* 안전성
+* 비용
+* 위험
+* 사용자 가치
+* 실행 준비도
+* 설명 가능성
+
+후보의 위치와 활성도는 고정되지 않는다.
+
+현재 사건이 바뀌면 같은 후보의 상태도 달라진다.
+
+---
+
+# 10. 핵심 구성 요소
+
+## 10.1 Node
+
+반복 관측과 검증을 통해 비교적 안정된 의미 지점이다.
+
+기능, 개념, 파일, 코드 심볼, 규칙, 사용자 선호와 오류 패턴 등이 될 수 있다.
+
+## 10.2 Fragment
+
+아직 안정된 Node가 되지 않은 흔적이다.
+
+한 번의 오류, 미완성 아이디어, 부분 로그, 약한 관계와 검증 전 후보가 해당한다.
+
+파편은 삭제 대상이 아니라 잠재적 승격 후보다.
+
+## 10.3 Hub
+
+여러 관계와 경로가 반복적으로 만나는 연결 중심이다.
+
+허브의 품질은 연결 수가 아니라 필요한 가능성까지의 경로를 얼마나 줄이는지로 평가한다.
+
+## 10.4 Anchor
+
+후보의 검색 우선순위와 활성화 가능성을 변화시키는 기준이다.
+
+앵커는 진실도를 직접 높이지 않는다.
+
+```text
+anchor_resonance ≠ evidence_strength
+anchor_resonance ≠ truth_confidence
+```
+
+사용자가 강하게 원하는 결과는 검색 우선순위를 높일 수 있지만, 그 결과를 사실로 만들지는 않는다.
+
+## 10.5 Layer
+
+레이어는 데이터를 소유하는 폴더가 아니다.
+
+같은 가능성 공간을 특정 기준으로 읽고 평가하는 연산자다.
+
+```text
+OPTIONAL_OBSERVATION_LAYER
+MANDATORY_POLICY_LAYER
+```
+
+설명, 효율, UI와 같은 레이어는 선택적일 수 있다.
+
+안전, 권한, 보호 파일 정책 레이어는 필수이며 우회할 수 없다.
+
+## 10.6 Fish
+
+물고기는 현재 사건에서 움직이는 가능성 묶음 또는 행동·출력 후보다.
+
+답변 후보, 기억 묶음, 기능 조합, 패치 후보, 위험 시나리오와 다음 행동 등이 물고기가 될 수 있다.
+
+---
+
+# 11. Core Space와 Product Space
+
+## Core Possibility Space
+
+CI 내부에서 사건, 후보, 앵커, 레이어와 관계를 계산하는 공간이다.
+
+시각적 또는 물리적 공간 형태를 반드시 가질 필요는 없다.
+
+## Product/User Space
+
+사용자가 실제 공간처럼 인지하고 사용하는 구조다.
+
+공식 Product Space는 다음 조건을 고려한다.
+
+```text
+Space
++ Anchor
++ 공간형태소
+```
+
+내부 계산 공간과 사용자 제품 공간을 혼합하지 않는다.
+
+---
+
+# 12. 상태를 독립 축으로 분리한다
+
+후보 하나를 HOT, BLOCKED, VERIFIED 같은 단일 상태로 표현하면 서로 다른 의미가 섞인다.
+
+최소 네 개의 독립 축이 필요하다.
+
+## 12.1 사건 활성 상태
+
+```text
+ACTIVE
+READY
+DORMANT
+SUPPRESSED
+SELECTED
+```
+
+## 12.2 저장·거주 상태
+
+```text
+RESIDENT   # 현재 메모리 또는 작업 공간
+INDEXED    # 요약·인덱스·SQLite
+ARCHIVED   # 상세 원문·디스크 보존
+```
+
+## 12.3 정책 상태
+
+```text
+ALLOWED
+APPROVAL_REQUIRED
+BLOCKED
+```
+
+## 12.4 증거 상태
+
+```text
+UNKNOWN
+VERIFIED
+SUPPORTED
+INFERRED
+CONFLICTED
+STALE
+```
+
+한 후보는 다음처럼 표현될 수 있다.
+
+```text
+activation = ACTIVE
+residency  = ARCHIVED
+policy     = ALLOWED
+evidence   = VERIFIED
+```
+
+오래된 SSD 자료라도 현재 사건에 적합하면 ACTIVE가 될 수 있다.
+
+---
+
+# 13. HOT/WARM/COLD의 최종 위치
+
+HOT/WARM/COLD를 데이터의 영구적 본질이나 고정 저장 계층으로 사용하지 않는다.
+
+기존 CI와의 호환이나 캐시 설명을 위해 사용할 경우에만 사건별 임시 운영 상태로 사용한다.
+
+```text
+HOT  = 현재 사건에서 즉시 계산 중
+WARM = 인양 가능성이 높아 대기 중
+COLD = 현재 활성도는 낮지만 보존 중
+```
+
+새 초구 코어 내부에서는 혼동을 줄이기 위해 다음 표현을 우선한다.
+
+```text
+ACTIVE / READY / DORMANT
+RESIDENT / INDEXED / ARCHIVED
+```
+
+BLOCKED는 HOT/WARM/COLD와 같은 축이 아니다.
+
+```text
+activation = ACTIVE
+policy = BLOCKED
+```
+
+라는 상태가 가능하다.
+
+---
+
+# 14. 점수와 확률
+
+초기 실험에서 출력되는 0.7, 0.9 같은 값은 통계적으로 보정된 확률이라고 단정하지 않는다.
+
+초기에는 다음 이름을 사용한다.
+
+```text
+activation_potential
+retrieval_score
+resonance_score
+```
+
+개념적 계산 요소:
+
+```text
+입력 관련성
++ 파동 적합성
++ 앵커 공명
++ 레이어 적합성
++ 맥락 연결성
++ 증거 강도
++ 시간 적합성
++ 사용자 가치
++ 설명 가능성
+- 인양 비용
+- 실행 위험
+- 충돌 감쇠
+```
+
+실제 확률은 반복 실험 데이터와 성공 빈도를 통해 보정한 후 사용한다.
+
+```text
+원시 활성 점수
+→ 후보 간 정규화
+→ 실제 성공률 비교
+→ calibration
+→ 보정된 인양 확률
+```
+
+활성 점수와 진실 확률은 별개다.
+
+```text
+activation_score
+evidence_strength
+truth_confidence
+route_confidence
+```
+
+를 분리한다.
+
+---
+
+# 15. 희소 활성화와 인지 예산
+
+모든 가능성을 매번 계산하지 않는다.
+
+현재 사건과 관련된 후보만 제한적으로 인양한다.
+
+```text
+넓게 보존한다.
+좁게 활성화한다.
+필요한 만큼 검증한다.
+통제된 결과만 출력한다.
+```
+
+인지 예산에는 다음이 포함된다.
+
+* 최대 활성 후보 수
+* 최대 인덱스 조회 수
+* 최대 상세 자료 인양 수
+* 최대 모델 호출
+* 최대 검증 반복
+* 최대 처리 시간
+* 최대 메모리
+* 최대 출력 길이
+
+단순 Top-k만 사용하면 낮은 점수지만 치명적인 위험 후보를 놓칠 수 있다.
+
+따라서 예산을 분리한다.
+
+```text
+main relevance budget
+safety sentinel budget
+conflict preservation budget
+exploration budget
+```
+
+---
+
+# 16. 상위차원 중첩
+
+중첩 백엔드에서는 복수 후보를 함께 보존한다.
+
+```text
+후보 A: 과거 안전 근거
+후보 B: 최신 실행 방법
+후보 C: 설명 자료
+후보 D: 실제 패치 실행
+후보 E: 변경 없는 미리보기
+```
+
+가능한 상태:
+
+```text
+A = ACTIVE
+B = SUPPRESSED
+C = ACTIVE
+D = ACTIVE + policy BLOCKED
+E = ACTIVE
+```
+
+중첩은 모든 후보를 끝까지 무제한 유지한다는 뜻이 아니다.
+
+인지 예산 안에서 필요한 후보와 충돌을 충분히 유지한다는 뜻이다.
+
+---
+
+# 17. 공명·상쇄·충돌
+
+## 공명
+
+독립된 여러 근거가 같은 후보를 지지하면 활성 가능성이 높아진다.
+
+## 상쇄
+
+위험, 비용, 부정 조건과 반대 근거는 후보를 감쇠한다.
+
+## 충돌
+
+근거가 서로 충돌할 경우 임의로 한쪽을 삭제하지 않는다.
+
+```text
+최신 자료는 A를 지지
+과거 검증 자료는 B를 지지
+→ CONFLICTED
+```
+
+충돌은 시스템 실패가 아니라 현실 상태 중 하나다.
+
+## 조기 붕괴 금지
+
+입력 직후 첫 키워드나 최고 단일 점수로 전체 사건을 확정하지 않는다.
+
+```text
+입력에서는 펼친다.
+백엔드에서는 중첩한다.
+출력 경계에서 수렴한다.
+```
+
+---
+
+# 18. 독립 정책 게이트
+
+관련성이 높다고 실행 권한이 생기지 않는다.
+
+정책 게이트는 활성화 점수와 독립적으로 작동한다.
+
+```text
+높은 활성도 + ALLOWED
+→ 출력 또는 실행 준비 가능
+
+높은 활성도 + APPROVAL_REQUIRED
+→ Preview 또는 승인 요청
+
+높은 활성도 + BLOCKED
+→ 관측과 설명은 가능
+→ 실행은 금지
+```
+
+초구 모델은 확률이 높다는 이유로 정책을 우회하지 않는다.
+
+---
+
+# 19. 관측 번들
+
+백엔드의 중첩 상태는 하나의 Observation Bundle로 수렴한다.
+
+```python
+ObservationBundle(
+    selected_candidates,
+    supporting_evidence,
+    suppressed_candidates,
+    conflicts,
+    activation_scores,
+    evidence_strength,
+    truth_confidence,
+    route_confidence,
+    policy_states,
+    side_effect_permission,
+    audit_trace,
+)
+```
+
+관측 번들은 출력 형식과 분리한다.
+
+같은 번들을 다음 형태로 투영할 수 있다.
+
+* 짧은 대화
+* 상세 보고서
+* 실행 미리보기
+* 승인 UI
+* 구조화된 JSON
+* 감사 로그
+
+---
+
+# 20. One Controlled Emission
+
+하나의 출력은 하나의 의미만 처리한다는 뜻이 아니다.
+
+한 번의 통제된 관측·방출 트랜잭션을 의미한다.
+
+```text
+Observation Bundle
+ ├─ 백그라운드 상태
+ └─ 업데이트 리뷰
+
+→ 한 번의 visible emission
+```
+
+복합 조회와 설명은 한 출력 번들에 포함할 수 있다.
+
+다만 변경·실행 의도는 승인 단위로 분리한다.
+
+```text
+조회       → 함께 출력 가능
+설명       → 함께 출력 가능
+후보 비교  → 함께 출력 가능
+패치 실행  → 별도 승인
+파일 변경  → 별도 승인
+고위험 행동 → 별도 승인
+```
+
+출력 불변식:
+
+* 가시 출력은 통제된 한 번의 emission
+* fallback 중복 금지
+* 억제 후보의 의도치 않은 누출 금지
+* 오래된 출력 잔류 금지
+* BLOCKED 후보 실행 금지
+* Audit Trace 보존
+
+---
+
+# 21. 폐루프 구조
+
+출력은 새로운 현실 조건을 만든다.
+
+```text
+Event
+→ Lift
+→ Superposition
+→ Projection
+→ Output or Action
+→ User / Environment Response
+→ New Event
+```
+
+CI의 과거 출력이 다음 사건의 앵커가 될 수 있지만, 자기 출력만으로 사실 상태를 VERIFIED로 승격하지 않는다.
+
+자기강화 오류를 막기 위해 다음을 적용한다.
+
+* CI 출력과 외부 근거 분리
+* 오류 기록의 음의 가중치
+* 시간 감쇠
+* 충돌 근거 유지
+* 자기 출력만으로 VERIFIED 금지
+* 반복 출력에 대한 독립 검증 요구
+
+---
+
+# 22. 개념 거버넌스
+
+새 아이디어를 즉시 코어 법칙으로 채택하지 않는다.
+
+```text
+ADOPTED
+VERIFIED_PARTIAL
+CANDIDATE
+HOLD
+CROW_NEST
+CONFLICT
+```
+
+## ADOPTED
+
+설계 기준으로 채택된 원칙.
+
+## VERIFIED_PARTIAL
+
+일부 실험에서 작동했지만 일반화가 검증되지 않은 구조.
+
+## CANDIDATE
+
+검증할 가치가 있는 후보.
+
+## HOLD
+
+현재는 구현하거나 채택하지 않는 개념.
+
+## CROW_NEST
+
+아직 의미와 구현 위치가 불명확한 파편.
+
+## CONFLICT
+
+기존 규칙과 충돌하여 결정이 필요한 상태.
+
+새 아이디어는 먼저 `Captured Fish`로 보존하고, 실험과 검증 후 승격한다.
+
+---
+
+# 23. 9단계 공식 검증 계약
+
+접근 가능한 기록으로 Stage 1~8의 과거 공식 명칭 전체는 확인되지 않았다.
+
+따라서 다음 목록은 과거 기록을 임의 복원한 것이 아니라, 앞으로 사용할 공식 검증 계약이다.
+
+## Stage 1 — 가능성 개체
+
+Node, Fragment, Fish와 후보 상태를 독립 객체로 표현한다.
+
+## Stage 2 — 앵커 공명
+
+같은 후보가 앵커에 따라 다른 활성도를 가지는지 확인한다.
+
+앵커가 진실도를 직접 바꾸지 않는지도 검사한다.
+
+## Stage 3 — 레이어 관측
+
+같은 데이터를 여러 레이어가 복제 없이 다르게 평가하는지 확인한다.
+
+## Stage 4 — 동적 인양
+
+최근성이나 저장 위치 하나가 아니라 사건 적합성으로 후보를 인양하는지 확인한다.
+
+## Stage 5 — 의미 파동
+
+복합 의도, 부정, 시간, 조건과 관계가 여러 Wave로 보존되는지 확인한다.
+
+## Stage 6 — 후보 중첩
+
+복수 후보와 ACTIVE, SUPPRESSED, CONFLICTED 상태를 동시에 유지하는지 확인한다.
+
+정책 BLOCKED는 별도 축으로 측정한다.
+
+## Stage 7 — 공명·상쇄
+
+독립 근거, 위험, 비용, 충돌이 활성 점수에 반영되는지 확인한다.
+
+## Stage 8 — 관측 경계
+
+상위차원 중첩 상태를 통제된 한 번의 하위차원 emission으로 투영하는지 확인한다.
+
+## Stage 9 — 사건 형태 연결
+
+입력 파동과 사건 형태를 가능성 인양에 연결하고 기준선 대비 회귀를 검사한다.
+
+현재 확인된 Stage 9 결과:
+
+```text
+fish_count: 6
+scenario_count: 5
+baseline_matched: 5/5
+event_shape_matched: 5/5
+corrected_count: 0
+old_data_selected_count: 4
+ssd_selected_count: 4
+status: PASS_WITH_WARNINGS
+```
+
+이 결과는 다음을 의미한다.
+
+* 입력 파동과 사건 형태가 연결됨
+* 오래된 자료와 SSD 자료가 자동 배제되지 않음
+* 기준선 대비 회귀가 발견되지 않음
+* 실험 데이터 누적이 가능함
+
+이 결과가 의미하지 않는 것:
+
+* Event Shape가 기준선보다 우월함
+* 점수가 통계적으로 보정된 확률임
+* 대규모 후보에서도 일반화됨
+* 적대적 입력에서도 안전함
+* 전체 초구 모델이 완성됨
+
+Stage 9는 우월성 증명이 아니라 연결·비회귀 검증이다.
+
+---
+
+# 24. 복합 스트레스 검증
+
+9단계 개별 실험 후 모든 구조를 동시에 압박한다.
+
+필수 스트레스 축:
+
+## 복합 의미
+
+조회, 과거 근거, 실행 금지, 효율, 출력 길이를 한 입력에 함께 넣는다.
+
+## 조기 붕괴
+
+첫 키워드가 전체 사건을 잘못 대표하지 않는지 검사한다.
+
+## 부정과 권한
+
+후보 활성도는 높지만 실행이 BLOCKED인 상태를 유지하는지 본다.
+
+## 저장 위치 교환
+
+동일 데이터의 RAM·SSD 위치를 바꾸어도 사건 적합성이 같다면 결과가 유지되어야 한다.
+
+## 시간과 증거 충돌
+
+최신의 약한 근거와 오래된 강한 근거를 충돌시킨다.
+
+## 레이어 충돌
+
+안전, 효율, 설명 레이어가 서로 다른 평가를 내릴 때 차이를 보존한다.
+
+## 후보 폭증
+
+수십·수백 후보에서 메모리, 처리 시간과 선택 안정성을 측정한다.
+
+## 표현 변형
+
+같은 뜻의 다른 문장, 오탈자, 무관한 단어 삽입에도 핵심 결과가 유지되는지 본다.
+
+## 투영 손실
+
+짧은 출력으로 압축하면서 안전 경고와 불확실성이 사라지지 않는지 확인한다.
+
+## 출력 오염
+
+다음을 검사한다.
+
+```text
+MULTIPLE_VISIBLE_OUTPUT_EVENTS
+STALE_OUTPUT_LEAK
+SUPPRESSED_CANDIDATE_LEAK
+FALLBACK_DUPLICATION
+INTERNAL_TERM_OVEREXPOSURE
+```
+
+## 부작용 압박
+
+READ_ONLY 실험에서 파일 수정, 패치 적용, 보호 파일 접근과 명령 실행이 차단되는지 확인한다.
+
+## 역추적
+
+최종 출력에서 원문, Wave, 선택 후보, 증거와 정책 상태를 다시 찾을 수 있어야 한다.
+
+---
+
+# 25. 검증 방법 보완
+
+## 독립 Oracle
+
+점수 공식을 만든 규칙과 독립된 기대 결과가 필요하다.
+
+같은 규칙으로 답을 만들고 같은 규칙으로 정답을 판정하는 순환 검증을 피한다.
+
+## Ablation
+
+각 요소를 하나씩 제거한다.
+
+```text
+Anchor 제거
+Layer 제거
+Event Shape 제거
+Context 제거
+Time 축 제거
+Safety Sentinel 제거
+```
+
+제거해도 결과가 전혀 바뀌지 않으면 그 요소는 이름만 존재할 수 있다.
+
+## Metamorphic Test
+
+입력 표현과 저장 조건을 바꾸어도 유지되어야 할 결과가 유지되는지 검사한다.
+
+* paraphrase
+* noise insertion
+* storage swap
+* candidate order swap
+* harmless context addition
+
+## Calibration
+
+활성 점수와 실제 성공률의 관계를 측정한다.
+
+* 높은 점수 후보의 성공률
+* 낮은 점수 후보의 성공률
+* 과신 오답
+* 저평가 정답
+* 안전 후보 누락률
+
+## Projection Loss
+
+상위차원 번들에서 하위차원 출력으로 투영될 때 손실된 핵심 정보가 무엇인지 측정한다.
+
+---
+
+# 26. 현실 구현 원칙
+
+```text
+독립 hypersphere_lab
+→ READ_ONLY 실험
+→ 9단계 계약
+→ 복합 스트레스
+→ Shadow 연결
+→ 기존 결과 비교
+→ 제한적 승격
+```
+
+현재 활성 앱 전체를 즉시 초구 엔진으로 교체하지 않는다.
+
+변경 작업은 다음 절차를 유지한다.
+
+```text
+Observation
+→ Preview
+→ Prepare
+→ 사용자 승인
+→ Apply
+→ Compile / Static Validation
+→ App Smoke Test
+→ Result Comparison
+→ Snapshot
+→ Rollback if necessary
+```
+
+금지 원칙:
+
+* 자동 전체 프로젝트 업데이트
+* 승인 없는 실제 패치
+* 무제한 백그라운드 실행
+* 전체 컴퓨터 무단 스캔
+* 보호 파일 직접 수정
+* 검증 없는 성공 선언
+* 실행 가능한 명령의 자리표시자
+* 활성 점수가 높다는 이유로 정책 우회
+
+---
+
+# 27. 범용 코어와 어댑터
+
+## Hypersphere Core
+
+* Event
+* Wave
+* Provenance
+* Dimension Lift
+* Node·Fragment·Fish
+* Anchor
+* Layer
+* Sparse Retrieval
+* Superposition
+* Evidence Evaluation
+* Policy Gate
+* Observation Bundle
+* Projection
+* Audit Trace
+* Feedback Event
+
+## Adapter
+
+* Memory Adapter
+* Code Adapter
+* Document Adapter
+* File Adapter
+* Patch Adapter
+* Web Adapter
+* Email Adapter
+* Calendar Adapter
+* Obsidian Adapter
+
+특정 분야의 규칙을 초구 코어에 직접 누적하지 않는다.
+
+---
+
+# 28. 가치 원칙
+
+## 과유불급
+
+필요 이상의 계산과 출력을 하지 않는다.
+
+## 다다익선과 희소 활성화
+
+가능성은 넓게 보존하지만 실제 계산은 제한된 후보에 집중한다.
+
+## 여백의 미
+
+내부 복잡성을 사용자 화면에 모두 노출하지 않는다.
+
+## 유비무환
+
+평소에는 낮게 활성화된 안전 근거, 과거 실패와 롤백 경로도 보존한다.
+
+## 조화
+
+정확성, 안전, 속도, 비용과 설명 가능성 중 하나만 극대화하지 않는다.
+
+## 효율
+
+대형 모델과 무제한 계산보다 로컬 인덱스, 제한된 파동 예산, 희소 활성화와 검증된 규칙을 조합한다.
+
+## 활용
+
+> 이해는 목적이 아니다. 구현하고, 사용하고, 이용한다.
+
+다만 이해 부족을 숨기는 것이 아니라, 관측 가능한 검증과 안전한 활용으로 보완한다.
+
+---
+
+# 29. 다관점 재검사
+
+## 29.1 철학 관점
+
+**판정: PASS**
+
+현실을 가능성의 관계장으로 해석하는 철학과 사건별 동적 활성화 구조가 일관된다.
+
+보완된 점은 철학적 비유를 물리적 사실이나 구현 완료로 확대하지 않는 것이다.
+
+## 29.2 논리 관점
+
+**판정: PASS**
+
+Event와 Wave, 활성 상태와 정책 상태, 저장 위치와 사건 활성도를 분리하면서 주요 범주 오류가 해소되었다.
+
+율의 순환 방법론과 CI의 순차 실행 파이프라인도 구분되었다.
+
+## 29.3 확률·수학 관점
+
+**판정: CONDITIONAL_PASS**
+
+현재 값은 보정된 확률보다 활성 점수로 취급하는 것이 타당하다.
+
+실제 확률로 사용하려면 반복 데이터, 독립 Oracle과 calibration이 필요하다.
+
+## 29.4 데이터 구조 관점
+
+**판정: PASS**
+
+다음 네 축을 독립적으로 관리하는 구조가 데이터 혼선을 줄인다.
+
+```text
+activation
+residency
+policy
+evidence
+```
+
+HOT/WARM/COLD의 과거 저장 계층 의미와 신형 활성 의미의 충돌도 해소되었다.
+
+## 29.5 소프트웨어 아키텍처 관점
+
+**판정: PASS**
+
+Input Front, Superposition Backend, Output Front의 책임이 분리되어 있다.
+
+Core와 Adapter 분리도 범용 확장에 적합하다.
+
+단, 실제 코드에서는 Event, Candidate, Bundle 인터페이스를 먼저 고정해야 한다.
+
+## 29.6 안전·거버넌스 관점
+
+**판정: PASS**
+
+정책 게이트가 활성 점수와 독립되어 있어 관련성이 높은 위험 후보도 실행을 차단할 수 있다.
+
+MANDATORY_POLICY_LAYER와 사용자 승인 절차를 우회 불가 조건으로 유지해야 한다.
+
+## 29.7 사용자 경험 관점
+
+**판정: PASS**
+
+내부에서는 복수 후보를 유지하되 외부에는 한 번의 통제된 emission을 제공한다.
+
+복합 조회는 한 번에 처리하면서 변경·실행만 별도 승인하는 구조가 자연스럽다.
+
+## 29.8 로컬 성능 관점
+
+**판정: CONDITIONAL_PASS**
+
+희소 활성화와 인지 예산은 저사양 로컬 환경에 적합하다.
+
+후보 폭증, 디스크 인양, Audit Trace 누적 비용은 실제 측정이 필요하다.
+
+## 29.9 과학적 검증 관점
+
+**판정: PASS_WITH_REQUIRED_GATES**
+
+Stage 9의 범위를 비회귀·연결 검증으로 제한하여 과도한 결론을 제거했다.
+
+독립 Oracle, Ablation, Metamorphic Test와 Calibration을 통과하기 전에는 우월성이나 일반성을 주장하면 안 된다.
+
+## 29.10 범용성 관점
+
+**판정: PASS**
+
+초구 코어가 특정 코드 작업이나 CI 앱 기능에 종속되지 않는다.
+
+기억, 코드, 문서와 도구를 Adapter로 분리하면 다른 프로젝트와 Obsidian 같은 외부 도구로 확장할 수 있다.
+
+## 29.11 피드백 편향 관점
+
+**판정: PASS_WITH_GUARDS**
+
+출력이 새 Event가 되는 폐루프는 현실적이다.
+
+다만 자기 출력이 반복 강화되는 오류를 막기 위해 외부 근거 분리와 자기 출력만으로 VERIFIED 승격 금지가 필요하다.
+
+## 29.12 실패 복구 관점
+
+**판정: PASS**
+
+원문 불변, Provenance, Audit Trace, Snapshot과 Rollback 구조를 통해 실패 원인과 선택 경로를 역추적할 수 있다.
+
+---
+
+# 30. 최종 판정
+
+현재 철학과 논리 구조는 초구 코어의 계약을 고정할 수준에 도달했다.
+
+```text
+READY_FOR_CONTRACT_FREEZE
+```
+
+그러나 기존 CI의 실시간 경로를 대체할 단계는 아니다.
+
+```text
+NOT_READY_FOR_LIVE_REPLACEMENT
+```
+
+다음 승격 조건은 다음과 같다.
+
+```text
+Event / Wave / Provenance 계약 고정
+→ 9단계 공식 실험 정리
+→ 독립 Oracle 구축
+→ Ablation
+→ Metamorphic Test
+→ 복합 스트레스
+→ Calibration
+→ Shadow 비교
+→ 제한적 경로 승격
+```
+
+최종 정의:
+
+> **율의 초구 방법론은 현실 전체를 안다고 주장하는 이론이 아니다. 제한된 하위차원 입력으로부터 출처가 보존된 상위차원 가능성 상태를 구성하고, 복수 후보와 충돌을 충분히 유지하며, 활성도·증거·진실도·경로·정책을 분리한 뒤, 현재 목적에 필요한 결과를 한 번의 통제된 하위차원 관측으로 투영하고, 그 결과를 다시 현실에서 검증하는 순환적 구현 방법이다.**
+
+가장 짧게 압축하면 다음과 같다.
+
+> **초구 공간은 가능성을 보존하고, 사건은 확률장을 바꾸며, 중첩은 충돌을 견디고, 정책은 실행을 통제하며, 관측은 필요한 현실만 출력하고, 현실의 반응은 다시 새로운 사건이 된다.**
